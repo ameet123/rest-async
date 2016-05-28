@@ -1,12 +1,12 @@
 package hello;
 
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import reactor.bus.Event;
 import reactor.fn.Consumer;
 
-import java.util.*;
 import java.util.concurrent.*;
 
 @Service

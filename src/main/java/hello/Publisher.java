@@ -1,5 +1,6 @@
 package hello;
 
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.bus.Event;
@@ -18,7 +19,7 @@ public class Publisher {
     @Autowired
     CountDownLatch latch;
 
-    public void publishQuotes(int numberOfQuotes) throws InterruptedException {
+    public ConcurrentMap<Integer, String> publishQuotes(int numberOfQuotes) throws InterruptedException {
         long start = System.currentTimeMillis();
 
         AtomicInteger counter = new AtomicInteger(1);
@@ -26,6 +27,7 @@ public class Publisher {
         AnchoredRequest ar;
         for (int i = 0; i < numberOfQuotes; i++) {
             ar = new AnchoredRequest(i, quoteMap);
+            // this is where each request is fired and processed asynchronously
             eventBus.notify("quotes", Event.wrap(ar));
         }
 
@@ -36,6 +38,10 @@ public class Publisher {
         System.out.println("Elapsed time: " + elapsed + "ms");
         System.out.println("Average time per quote: " + elapsed / numberOfQuotes + "ms");
         System.out.println("Total entries:" + quoteMap.size());
+        return quoteMap;
+    }
+
+    public void processResults(ConcurrentMap<Integer, String> quoteMap) {
         for (Map.Entry<Integer, String> e : quoteMap.entrySet()) {
             System.out.println(e.getKey() + "=>\t" + e.getValue());
         }

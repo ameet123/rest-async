@@ -36,7 +36,6 @@ public class Publisher {
         long elapsed = System.currentTimeMillis() - start;
 
         System.out.println("Elapsed time: " + elapsed + "ms");
-        System.out.println("Average time per quote: " + elapsed / numberOfQuotes + "ms");
         System.out.println("Total entries:" + quoteMap.size());
         return quoteMap;
     }
